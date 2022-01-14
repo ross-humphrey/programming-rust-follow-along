@@ -97,9 +97,64 @@ fn main() {
             "imperative"
         });
     }
+
+    // Slices
+    /*
+    A slice - written [T] without specifying the length - is a region of
+    an array or vector. Since it can be any length - this cannot be stored in a variable
+    and instead it is always passed by reference.
+
+    A reference to a slice is a 'fat pointer' a two word value comprising a pointer to the
+    slices first value and the number of elements in the slice.
+     */
+
+    let v: Vec<f64> = vec![0.0, 0.707, 1.0, 0.707];
+    let a: [f64; 4] = [0.0, 0.707, 1.0, 0.707];
+
+    let sv: &[f64] = &v; // Converts the &Vec<f64> reference and &[f64; 4] reference to slice references that point directly to data.
+    let sa: &[f64] = &a;
+
+    fn print(n: &[f64]){ // Takes a slice argument as reference, because it takes a reference to a slice it can apply to vectors or arrays.
+        // Many methods for vectors or arrays are methods defined on slices. Like - sort or reverse = methods on slice type [T]
+        for elt in n {
+            println!("{}", elt);
+        }
+    }
+    print(&a);
+    print(&v);
+
+    // Can get a reference to a slice of an array or vector, or a slice of an existing slice by indexing it with a range
+    println!("First two elements of v");
+    print(&v[0..2]); // Prints the first two elements of v
+    println!("All elements starting with a[2]");
+    print(&a[2..]);//Prints elements of a starting with a[2]
+    println!("Print v[1] and v[2]");
+    print(&sv[1..3]);
+
+    /*
+    Slices almost always appear behind references, so we often refer to types ike &[T] or &str as "slices"
+    using shorter name for the more common concept.
+     */
+
+    // String literals
+    let speech = "\"Ouch!\" said the well.\n";// Single quotes dont need a backslash escape and double quotes do
+    // A string can span multiple lines
+    println!("In the room the women come and go,
+       singing of Mount Abora");
+
+    // With a backslash at the end of the line - the newline character is ignore as well as any white space
+    println!("In the room the women come and go,\
+    singing of Mount Abora");
+
+    // A raw string is tagged with lowercase r. All backslashes and whitespace characters inside a raw string are included in the string.
+    let default_win_install_path = r"C:\Program Files\Gorillas";
+
+
 }
 
 fn new_pixel_buffer(rows: usize, cols: usize) -> Vec<u8> {
     vec![0; rows * cols]
 }
+
+
 
