@@ -150,11 +150,39 @@ fn main() {
     let default_win_install_path = r"C:\Program Files\Gorillas";
 
 
+    // Ownership and Moves
+    // Allocating a tuple on heap
+    let point = Box::new((0.625, 0.5));
+    let label = format!("{:?}", point);
+    assert_eq!(label, "(0.625, 0.5)");
+
+    // Structs (and ownership)
+    struct Person {name: String, birth: i32};
+
+    let mut composers = Vec::new();
+    composers.Push(Person {name: "Palestrina".to_string(), birth: 1525});
+    composers.Push(Person {name: "Dowland".to_string(), birth: 1563});
+    composers.Push(Person {name: "Lully".to_string(), birth: 1632});
+
+    for composer in composers {
+        println!("{}, born {}", composer.name, composer.birth);
+    }
+
+
 }
 
 fn new_pixel_buffer(rows: usize, cols: usize) -> Vec<u8> {
     vec![0; rows * cols]
 }
 
+// A variable owns its value - when control leaves the block in which a variable is defined - the variable is dropped along with it
+fn print_padovan(){
+    let mut padovan = vec![1,1,1]; // allocated here
+    for i in 3..10 {
+        let next = padovan[i-3] + padovan[i-2];
+        padovan.push(next);
+    }
+    println!("P(1..10) = {:?}",padovan);
+} // dropped here
 
 
