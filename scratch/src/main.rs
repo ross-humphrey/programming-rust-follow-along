@@ -160,13 +160,40 @@ fn main() {
     struct Person {name: String, birth: i32};
 
     let mut composers = Vec::new();
-    composers.Push(Person {name: "Palestrina".to_string(), birth: 1525});
-    composers.Push(Person {name: "Dowland".to_string(), birth: 1563});
-    composers.Push(Person {name: "Lully".to_string(), birth: 1632});
+    composers.push(Person {name: "Palestrina".to_string(), birth: 1525});
+    composers.push(Person {name: "Dowland".to_string(), birth: 1563});
+    composers.push(Person {name: "Lully".to_string(), birth: 1632});
 
     for composer in composers {
         println!("{}, born {}", composer.name, composer.birth);
     }
+
+    /**
+    Moves and indexed content
+
+    How to move an element out of a vector ... that is ... if you really need to
+    **/
+
+    // Build a vector of the strings
+    let mut v = Vec::new();
+    for i in 101 .. 106 {
+        v.push(i.to_string());
+    }
+
+    // 1. Pop a value of the end of the vector
+    let fifth = v.pop().expect("vector empty!");
+    assert_eq!(fifth, "105");
+
+    // 2. Move a value out of a given index in the vector and move last element in its spot
+    let second = v.swap_remove(1);
+    assert_eq!(second, "102");
+
+    // 3. Swap in another value for the one we are taking out
+    let third = std::mem::replace(&mut v[2], "substitute".to_string());
+    assert_eq!(third, "103");
+
+    // What is left in the vector?
+    assert_eq!(v, vec!["101", "104", "substitute"])
 
 
 }
