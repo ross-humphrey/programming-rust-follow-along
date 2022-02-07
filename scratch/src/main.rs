@@ -193,9 +193,24 @@ fn main() {
     assert_eq!(third, "103");
 
     // What is left in the vector?
-    assert_eq!(v, vec!["101", "104", "substitute"])
+    assert_eq!(v, vec!["101", "104", "substitute"]);
 
+    // References
+    let mut table = Table::new();
+    table.insert("Gesulado".to_string(), vec!["Tenebrae Responsoria".to_string(), "Many Madrigals".to_string()]);
+    table.insert("Caravaggio".to_string(), vec!["musicians".to_string(), "The calling of St. Matthew".to_string()]);
+    table.insert("Cellini".to_string(), vec!["Perseus with the head of medusa".to_string(), "A salt cellar".to_string()]);
+    show(&table); // Only needs to read from the table so just pass the shared reference. Instead of passing by value, and transferring ownership. PASS BY REFERENCE
+    sort_works(&mut table); // Mutable reference parsed - so changes to it can be made. PASS BY VALUE
 
+    // Assigning References
+    let b = true;
+    let x = 10;
+    let y = 20;
+    let mut r = &x;
+
+    if b { r = &y;}
+    assert!(*r==10 || *r == 20);
 }
 
 fn new_pixel_buffer(rows: usize, cols: usize) -> Vec<u8> {
@@ -213,3 +228,24 @@ fn print_padovan(){
 } // dropped here
 
 
+use std::collections::HashMap;
+type Table = HashMap<String, Vec<String>>;
+
+fn show(table: &Table){
+    // This is not ideal as we destroy the table - instead we should use references - accessing the value without affecting ownership
+    for (artist, works) in table{
+        println!("works by {}:", artist);
+
+        for work in works { // Not order dependant
+            println!(" {}", work);
+        }
+    }
+}
+
+// Sorts the list of work for an artist
+fn sort_works(table: &mut Table){
+    // The mutable borrow grants sort_works the ability to read and modify the structure required by sort
+    for (_artist, works) in table {
+        works.sort();
+    }
+}
